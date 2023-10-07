@@ -16,6 +16,17 @@
         android:theme="@style/Theme.GitHubSubmission"
         tools:targetApi="33">
         <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.modeSwitch.ModeSwitch"
+            android:exported="false" />
+        <activity
             android:name=".ui.favorite.FavoriteUserActivity"
             android:exported="false"
             android:label="@string/title_activity_favorite_user"
@@ -27,13 +38,12 @@
             android:theme="@style/Theme.GitHubSubmission" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
+
+        <meta-data
+            android:name="androidx.room.auto"
+            android:value="2.5.2" />
     </application>
 
 </manifest>

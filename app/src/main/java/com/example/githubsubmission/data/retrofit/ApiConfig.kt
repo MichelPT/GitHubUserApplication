@@ -6,12 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
-    companion object{
+    companion object {
         fun getApiService(): ApiService {
             val loggingInterceptor = Interceptor { chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "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")
+                    .addHeader("Authorization", "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")
                     .build()
                 chain.proceed(requestHeaders)
             }

@@ -9,13 +9,13 @@ import retrofit2.http.*
 interface ApiService {
     @GET("search/users")
     fun getProfiles(
-        @Query("q") name: String
+        @Query("q") name: String,
     ): Call<GitHubResponse>
 
     @GET("users/{username}")
     fun getDetailUser(
-        @Path("username") username : String
-    ) : Call<DetailUserResponse>
+        @Path("username") username: String,
+    ): Call<DetailUserResponse>
 
     @GET("users/{username}/followers")
     fun getFollowers(@Path("username") username: String): Call<List<ItemsItem>>

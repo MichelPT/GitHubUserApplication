@@ -6,24 +6,26 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [FavoriteUser::class], version = 1)
-abstract class FavoriteRoomDatabase: RoomDatabase() {
-    abstract fun favoriteDao():FavoriteDao
+@Database(entities = [FavoriteUser::class], version = 1, exportSchema = false)
+abstract class FavoriteRoomDatabase : RoomDatabase() {
+    abstract fun favoriteDao(): FavoriteDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: FavoriteRoomDatabase? = null
 
+        @JvmStatic
         fun getDatabase(context: Context): FavoriteRoomDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    FavoriteRoomDatabase::class.java,
-                    "favorite_database"
-                ).build()
-                INSTANCE = instance
-                instance
+            if (INSTANCE == null) {
+                synchronized(FavoriteRoomDatabase::class.java) {
+                    INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        FavoriteRoomDatabase::class.java, "favorite_database"
+                    )
+                        .build()
+                }
             }
+            return INSTANCE as FavoriteRoomDatabase
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.githubsubmission.ui.main
 
-import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,13 +7,13 @@ import com.example.githubsubmission.data.response.GitHubResponse
 import com.example.githubsubmission.data.response.ItemsItem
 import com.example.githubsubmission.data.retrofit.ApiConfig
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 
-class MainViewModel:ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _listUsers = MutableLiveData<List<ItemsItem>>()
-    val listUsers : LiveData<List<ItemsItem>> = _listUsers
+    val listUsers: LiveData<List<ItemsItem>> = _listUsers
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -26,11 +24,7 @@ class MainViewModel:ViewModel() {
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
-    var errorMessage = ""
-
-    companion object {
-        const val TAG = "MainViewModel"
-    }
+    var errorMessage = "Please check your connectivity!"
 
     init {
         findProfiles()
@@ -41,41 +35,43 @@ class MainViewModel:ViewModel() {
         findProfiles()
     }
 
-    private fun findProfiles(){
-        _isError.value=false
+    private fun findProfiles() {
+        _isError.value = false
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getProfiles(name.value ?: "a")
-        client.enqueue(object : Callback, retrofit2.Callback<GitHubResponse> {
+
+        val nameValue = _name.value ?: "a" // Get the current value of name LiveData
+
+        val client = ApiConfig.getApiService().getProfiles(nameValue)
+        client.enqueue(object : Callback<GitHubResponse> {
             override fun onResponse(
                 call: Call<GitHubResponse>,
                 response: Response<GitHubResponse>,
             ) {
                 _isLoading.value = false
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     val responseBody = response.body()
-                    if (responseBody!=null){
-                        _listUsers.value = response.body()?.items
-                    }else{
-                        errorMessage = response.message()
-                        _isError.value=true
-                        Log.e(TAG, "onFailure: ${response.message()}")
+                    if (responseBody != null) {
+                        _listUsers.value = responseBody.items
+                    } else {
+                        errorMessage = "Response body is null"
+                        _isError.value = true
                     }
-                }
-                else {
-                    errorMessage = response.message()
-                    _isError.value=true
-                    Log.e(TAG, "onFailure: ${response.message()}")
+                } else {
+                    errorMessage = "Unsuccessful response: ${response.code()}"
+                    _isError.value = true
                 }
             }
 
             override fun onFailure(call: Call<GitHubResponse>, t: Throwable) {
-                errorMessage = t.message.toString()
-                _isError.value=true
+                errorMessage = t.message ?: "Unknown error"
+                _isError.value = true
                 _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
             }
-
-        }
-        )
+        })
     }
+
+    companion object {
+        const val TAG = "MainViewModel"
+    }
+
 }

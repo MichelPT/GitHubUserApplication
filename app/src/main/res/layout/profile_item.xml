@@ -28,7 +28,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            tools:src="@tools:sample/backgrounds/scenic"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/tv_profile_title"

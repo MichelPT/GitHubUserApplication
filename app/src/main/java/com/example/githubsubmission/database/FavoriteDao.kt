@@ -14,7 +14,7 @@ interface FavoriteDao {
     fun insert(favorite: FavoriteUser)
 
     @Update
-    fun update(favorite:FavoriteUser)
+    fun update(favorite: FavoriteUser)
 
     @Delete
     fun delete(favorite: FavoriteUser)

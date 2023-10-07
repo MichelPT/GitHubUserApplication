@@ -2,7 +2,6 @@ package com.example.githubsubmission.database
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
-import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -15,6 +14,8 @@ data class FavoriteUser(
     val username: String = "",
 
     @ColumnInfo(name = "avatarUrl")
-    val avatarUrl: String? = null
+    val avatarUrl: String? = null,
 
-) : Parcelable
+    @ColumnInfo(name = "id")
+    val id: Int? = 0,
+    ) : Parcelable
